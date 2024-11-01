@@ -48,44 +48,46 @@ import com.example.cupcake.ui.theme.CupcakeTheme
  */
 @Composable
 fun StartOrderScreen(
-    quantityOptions: List<Pair<Int, Int>>,
-    onNextButtonClicked:(Int) -> Unit,
-    modifier: Modifier = Modifier
+    quantityOptions: List<Pair<Int, Int>>, // List of quantity options represented as pairs of label resource ID and quantity
+    onNextButtonClicked: (Int) -> Unit, // Callback function to handle button clicks, passing the selected quantity
+    modifier: Modifier = Modifier // Modifier for additional customization
 ) {
+    // Main column to arrange child components vertically
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.SpaceBetween
+        verticalArrangement = Arrangement.SpaceBetween // Space between child components
     ) {
+        // Column for header content (image and title)
         Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small))
+            modifier = Modifier.fillMaxWidth(), // Fill available width
+            horizontalAlignment = Alignment.CenterHorizontally, // Center items horizontally
+            verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small)) // Spacing between items
         ) {
-            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_medium)))
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_medium))) // Spacer for vertical spacing
             Image(
-                painter = painterResource(R.drawable.cupcake),
-                contentDescription = null,
-                modifier = Modifier.width(300.dp)
+                painter = painterResource(R.drawable.cupcake), // Load cupcake image
+                contentDescription = null, // No description for decorative image
+                modifier = Modifier.width(300.dp) // Set width of the image
             )
-            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_medium)))
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_medium))) // Spacer for vertical spacing
             Text(
-                text = stringResource(R.string.order_cupcakes),
-                style = MaterialTheme.typography.headlineSmall
+                text = stringResource(R.string.order_cupcakes), // Display title for the screen
+                style = MaterialTheme.typography.headlineSmall // Use small headline typography style
             )
-            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_small)))
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_small))) // Spacer for vertical spacing
         }
+        // Column for quantity selection buttons
         Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(
-                dimensionResource(id = R.dimen.padding_medium)
-            )
+            modifier = Modifier.fillMaxWidth(), // Fill available width
+            horizontalAlignment = Alignment.CenterHorizontally, // Center items horizontally
+            verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_medium)) // Spacing between items
         ) {
+            // Iterate through the quantity options and create buttons
             quantityOptions.forEach { item ->
                 SelectQuantityButton(
-                    labelResourceId = item.first,
-                    onClick = {onNextButtonClicked(item.second)},
-                    modifier = Modifier.fillMaxWidth(),
+                    labelResourceId = item.first, // Pass the label resource ID for the button
+                    onClick = { onNextButtonClicked(item.second) }, // Trigger onNextButtonClicked with the quantity
+                    modifier = Modifier.fillMaxWidth() // Fill available width for buttons
                 )
             }
         }
@@ -98,28 +100,29 @@ fun StartOrderScreen(
  */
 @Composable
 fun SelectQuantityButton(
-    @StringRes labelResourceId: Int,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    @StringRes labelResourceId: Int, // Resource ID for button label (string)
+    onClick: () -> Unit, // Callback function to handle click events
+    modifier: Modifier = Modifier // Modifier for additional customization
 ) {
     Button(
-        onClick = onClick,
-        modifier = modifier.widthIn(min = 250.dp)
+        onClick = onClick, // Trigger onClick when the button is clicked
+        modifier = modifier.widthIn(min = 250.dp) // Set minimum width for the button
     ) {
-        Text(stringResource(labelResourceId))
+        Text(stringResource(labelResourceId)) // Display the button label
     }
 }
 
+// Preview function to visualize the StartOrderScreen
 @Preview
 @Composable
 fun StartOrderPreview() {
-    CupcakeTheme {
+    CupcakeTheme { // Apply the theme for the preview
         StartOrderScreen(
-            quantityOptions = DataSource.quantityOptions,
-            onNextButtonClicked = {},
+            quantityOptions = DataSource.quantityOptions, // Use quantity options from data source
+            onNextButtonClicked = {}, // Empty callback for preview
             modifier = Modifier
-                .fillMaxSize()
-                .padding(dimensionResource(R.dimen.padding_medium))
+                .fillMaxSize() // Fill the available size
+                .padding(dimensionResource(R.dimen.padding_medium)) // Add padding
         )
     }
 }
