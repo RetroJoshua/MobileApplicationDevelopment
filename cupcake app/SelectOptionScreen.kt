@@ -49,88 +49,99 @@ import com.example.cupcake.ui.theme.CupcakeTheme
  */
 @Composable
 fun SelectOptionScreen(
-    subtotal: String,
-    options: List<String>,
-    onSelectionChanged: (String) -> Unit = {},
-    onCancelButtonClicked: () -> Unit = {},
-    onNextButtonClicked: () -> Unit = {},
-    modifier: Modifier = Modifier
+    subtotal: String, // The subtotal to display
+    options: List<String>, // List of options for the user to select
+    onSelectionChanged: (String) -> Unit = {}, // Callback for when the selection changes
+    onCancelButtonClicked: () -> Unit = {}, // Callback for when the cancel button is clicked
+    onNextButtonClicked: () -> Unit = {}, // Callback for when the next button is clicked
+    modifier: Modifier = Modifier // Modifier for additional customization
 ) {
+    // State to hold the currently selected value, persisted across recompositions
     var selectedValue by rememberSaveable { mutableStateOf("") }
 
+    // Main column to arrange child components vertically
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.SpaceBetween
+        verticalArrangement = Arrangement.SpaceBetween // Space between child components
     ) {
+        // Column for options and price label
         Column(modifier = Modifier.padding(dimensionResource(R.dimen.padding_medium))) {
+            // Iterate through options and create selectable rows
             options.forEach { item ->
                 Row(
                     modifier = Modifier.selectable(
-                        selected = selectedValue == item,
+                        selected = selectedValue == item, // Highlight if the item is selected
                         onClick = {
-                            selectedValue = item
-                            onSelectionChanged(item)
+                            selectedValue = item // Update selected value
+                            onSelectionChanged(item) // Trigger callback with selected item
                         }
                     ),
-                    verticalAlignment = Alignment.CenterVertically
+                    verticalAlignment = Alignment.CenterVertically // Align items vertically in the center
                 ) {
+                    // Radio button to represent selection
                     RadioButton(
-                        selected = selectedValue == item,
+                        selected = selectedValue == item, // Check if this option is selected
                         onClick = {
-                            selectedValue = item
-                            onSelectionChanged(item)
+                            selectedValue = item // Update selected value
+                            onSelectionChanged(item) // Trigger callback with selected item
                         }
                     )
+                    // Text label for the option
                     Text(item)
                 }
             }
+            // Divider between options and price label
             Divider(
-                thickness = dimensionResource(R.dimen.thickness_divider),
-                modifier = Modifier.padding(bottom = dimensionResource(R.dimen.padding_medium))
+                thickness = dimensionResource(R.dimen.thickness_divider), // Set thickness of the divider
+                modifier = Modifier.padding(bottom = dimensionResource(R.dimen.padding_medium)) // Padding below the divider
             )
+            // Display the formatted price label
             FormattedPriceLabel(
-                subtotal = subtotal,
+                subtotal = subtotal, // Pass subtotal to formatted price label
                 modifier = Modifier
-                    .align(Alignment.End)
+                    .align(Alignment.End) // Align the price label to the end of the column
                     .padding(
-                        top = dimensionResource(R.dimen.padding_medium),
-                        bottom = dimensionResource(R.dimen.padding_medium)
+                        top = dimensionResource(R.dimen.padding_medium), // Padding above the price label
+                        bottom = dimensionResource(R.dimen.padding_medium) // Padding below the price label
                     )
             )
         }
+        // Row for buttons (Cancel and Next)
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(dimensionResource(R.dimen.padding_medium)),
-            horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium)),
-            verticalAlignment = Alignment.Bottom
+                .fillMaxWidth() // Fill available width
+                .padding(dimensionResource(R.dimen.padding_medium)), // Padding around the row
+            horizontalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_medium)), // Spacing between buttons
+            verticalAlignment = Alignment.Bottom // Align buttons to the bottom of the row
         ) {
+            // Cancel button
             OutlinedButton(
-                modifier = Modifier.weight(1f),
-                onClick = onCancelButtonClicked
+                modifier = Modifier.weight(1f), // Equal weight for buttons to share space
+                onClick = onCancelButtonClicked // Trigger cancel callback
             ) {
-                Text(stringResource(R.string.cancel))
+                Text(stringResource(R.string.cancel)) // Display cancel text
             }
+            // Next button
             Button(
-                modifier = Modifier.weight(1f),
-                // the button is enabled when the user makes a selection
-                enabled = selectedValue.isNotEmpty(),
-                onClick = onNextButtonClicked
+                modifier = Modifier.weight(1f), // Equal weight for buttons to share space
+                enabled = selectedValue.isNotEmpty(), // Enable only if a selection is made
+                onClick = onNextButtonClicked // Trigger next callback
             ) {
-                Text(stringResource(R.string.next))
+                Text(stringResource(R.string.next)) // Display next text
             }
         }
     }
 }
 
+// Preview function to visualize the SelectOptionScreen
 @Preview
 @Composable
 fun SelectOptionPreview() {
-    CupcakeTheme {
+    CupcakeTheme { // Apply the theme for the preview
         SelectOptionScreen(
-            subtotal = "299.99",
-            options = listOf("Option 1", "Option 2", "Option 3", "Option 4"),
-            modifier = Modifier.fillMaxHeight()
+            subtotal = "299.99", // Example subtotal value
+            options = listOf("Option 1", "Option 2", "Option 3", "Option 4"), // Example options
+            modifier = Modifier.fillMaxHeight() // Fill the available height in the preview
         )
     }
 }
