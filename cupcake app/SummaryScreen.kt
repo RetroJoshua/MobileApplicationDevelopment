@@ -47,28 +47,34 @@ import com.example.cupcake.ui.theme.CupcakeTheme
  */
 @Composable
 fun OrderSummaryScreen(
-    orderUiState: OrderUiState,
-    onCancelButtonClicked:() ->Unit,
-    onSendButtonClicked: (String, String) -> Unit,
-    modifier: Modifier = Modifier
+    orderUiState: OrderUiState, // State containing order details
+    onCancelButtonClicked: () -> Unit, // Callback for cancel button click
+    onSendButtonClicked: (String, String) -> Unit, // Callback for send button click with subject and summary
+    modifier: Modifier = Modifier // Modifier for additional customization
 ) {
+    // Accessing the current context's resources
     val resources = LocalContext.current.resources
 
+    // Get a formatted string for the number of cupcakes based on the quantity
     val numberOfCupcakes = resources.getQuantityString(
-        R.plurals.cupcakes,
-        orderUiState.quantity,
-        orderUiState.quantity
+        R.plurals.cupcakes, // Resource ID for plural string
+        orderUiState.quantity, // The quantity of cupcakes
+        orderUiState.quantity // The quantity used in the string
     )
-    //Load and format a string resource with the parameters.
+
+    // Load and format the order summary string with specific parameters
     val orderSummary = stringResource(
-        R.string.order_details,
-        numberOfCupcakes,
-        orderUiState.flavor,
-        orderUiState.date,
-        orderUiState.quantity
+        R.string.order_details, // Resource ID for the order details string
+        numberOfCupcakes, // Number of cupcakes
+        orderUiState.flavor, // Flavor selected
+        orderUiState.date, // Pickup date selected
+        orderUiState.quantity // Quantity of cupcakes
     )
+
+    // Create a string resource for the new cupcake order title
     val newOrder = stringResource(R.string.new_cupcake_order)
-    //Create a list of order summary to display
+
+    // Create a list of items to display in the order summary
     val items = listOf(
         // Summary line 1: display selected quantity
         Pair(stringResource(R.string.quantity), numberOfCupcakes),
@@ -78,57 +84,67 @@ fun OrderSummaryScreen(
         Pair(stringResource(R.string.pickup_date), orderUiState.date)
     )
 
+    // Main column to arrange child components vertically
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.SpaceBetween
+        verticalArrangement = Arrangement.SpaceBetween // Space between child components
     ) {
+        // Column for order summary items
         Column(
-            modifier = Modifier.padding(dimensionResource(R.dimen.padding_medium)),
-            verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small))
+            modifier = Modifier.padding(dimensionResource(R.dimen.padding_medium)), // Padding around the column
+            verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small)) // Spacing between items
         ) {
+            // Iterate through the summary items and display them
             items.forEach { item ->
-                Text(item.first.uppercase())
-                Text(text = item.second, fontWeight = FontWeight.Bold)
-                Divider(thickness = dimensionResource(R.dimen.thickness_divider))
+                Text(item.first.uppercase()) // Display the label in uppercase
+                Text(text = item.second, fontWeight = FontWeight.Bold) // Display the value in bold
+                // Divider between each summary item
+                Divider(thickness = dimensionResource(R.dimen.thickness_divider)) 
             }
-            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_small)))
+            Spacer(modifier = Modifier.height(dimensionResource(R.dimen.padding_small))) // Spacer for vertical spacing
+            // Display the formatted price label
             FormattedPriceLabel(
-                subtotal = orderUiState.price,
-                modifier = Modifier.align(Alignment.End)
+                subtotal = orderUiState.price, // Pass the subtotal to display
+                modifier = Modifier.align(Alignment.End) // Align to the end of the column
             )
         }
+
+        // Row for action buttons (Send and Cancel)
         Row(
-            modifier = Modifier.padding(dimensionResource(R.dimen.padding_medium))
+            modifier = Modifier.padding(dimensionResource(R.dimen.padding_medium)) // Padding around the row
         ) {
             Column(
-                verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small))
+                verticalArrangement = Arrangement.spacedBy(dimensionResource(R.dimen.padding_small)) // Spacing between buttons
             ) {
+                // Send button
                 Button(
-                    modifier = Modifier.fillMaxWidth(),
-                    onClick = {onSendButtonClicked(newOrder, orderSummary)}
+                    modifier = Modifier.fillMaxWidth(), // Fill the width of the parent
+                    onClick = { onSendButtonClicked(newOrder, orderSummary) } // Trigger send callback with subject and summary
                 ) {
-                    Text(stringResource(R.string.send))
+                    Text(stringResource(R.string.send)) // Display send text
                 }
+                // Cancel button
                 OutlinedButton(
-                    modifier = Modifier.fillMaxWidth(),
-                    onClick = onCancelButtonClicked
+                    modifier = Modifier.fillMaxWidth(), // Fill the width of the parent
+                    onClick = onCancelButtonClicked // Trigger cancel callback
                 ) {
-                    Text(stringResource(R.string.cancel))
+                    Text(stringResource(R.string.cancel)) // Display cancel text
                 }
             }
         }
     }
 }
 
+// Preview function to visualize the OrderSummaryScreen
 @Preview
 @Composable
 fun OrderSummaryPreview() {
-    CupcakeTheme {
+    CupcakeTheme { // Apply the theme for the preview
         OrderSummaryScreen(
-            orderUiState = OrderUiState(0, "Test", "Test", "$300.00"),
-            onSendButtonClicked = { subject:String, summary: String ->},
-            onCancelButtonClicked = {},
-            modifier = Modifier.fillMaxHeight()
+            orderUiState = OrderUiState(0, "Test", "Test", "$300.00"), // Example order state
+            onSendButtonClicked = { subject: String, summary: String -> }, // Empty implementation for preview
+            onCancelButtonClicked = {}, // Empty implementation for preview
+            modifier = Modifier.fillMaxHeight() // Fill the available height in the preview
         )
     }
 }
