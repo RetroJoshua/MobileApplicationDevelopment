@@ -1,0 +1,120 @@
+1. Variable & Type Exercise
+    Create immutable variables for (π = 3.14, appVersion = "2.1.5")
+    Make mutable counter starting at 5, then increment/decrement it
+    Concatenate strings using template expressions
+
+2. Conditional Challenge
+    Write a when expression that returns:
+        "Freezing" for temps < 0
+        "Cold" 0-15°C
+        "Warm" 16-25°C
+        "Hot" >25°C
+
+3. Loop Drill
+
+    Create array of 10 random numbers (1-100)
+    Use for loop to calculate sum/average
+    Find maximum using while loop
+    Print numbers in reverse with step 2
+
+
+4. Null Safety Practice
+
+    Create nullable String variable
+    Use safe call operator to get length
+    Provide default value with Elvis operator
+    Force unwrap with !! operator (handle exception)
+
+
+
+
+Exercise 5: Operators & Data Types
+
+Problem:
+
+Create an immutable radius (Int = 7) and convert it to a Double.
+Calculate the circle’s area using π = 3.1415.
+Format the result to 2 decimal places using String.format().
+Use underscores to write the area as a Long (e.g., 153_86).
+
+Sample Output:
+Area: 153.94 (Formatted Long: 153_94)
+
+Hint:
+
+val radiusDouble = radius.toDouble()  
+val area = "%.2f".format(π * radiusDouble * radiusDouble)  
+
+Exercise 6: Lists & Loops
+
+Problem:
+
+Create a mutable list of 5 integers (1, 3, 5, 7, 9).
+Replace the third element with 10.
+Use a for loop to calculate the sum of even numbers.
+Print the list in reverse using downTo and step 2.
+
+Sample Output:
+
+Sum of even numbers: 10  
+Reversed list (step 2): 9 5 1  
+
+
+Hint:
+
+val numbers = mutableListOf(1, 3, 5, 7, 9)  
+numbers[2] = 10  
+for (i in numbers.size-1 downTo 0 step 2) { ... }  
+
+Exercise 7: Control Flow with when
+
+Problem:
+Write a when expression that returns:
+
+"Free coffee!" if the time is between 8 AM and 10 AM (inclusive)
+"Happy hour!" if the time is 5 PM or 6 PM
+"Closed" if the time is < 6 AM or > 11 PM
+"Open" for all other times
+
+Sample Input/Output:
+
+println(checkHours(9))  // Free coffee!  
+println(checkHours(17)) // Happy hour!  
+println(checkHours(23)) // Closed  
+
+
+Hint:
+
+fun checkHours(hour: Int): String = when (hour) {  
+    in 8..10 -> "Free coffee!"  
+    17, 18 -> "Happy hour!"  
+    in 0..5, in 23..24 -> "Closed"  
+    else -> "Open"  
+}  
+
+Exercise 8: String Templates & Null Safety
+
+Problem:
+
+Create a nullable String? variable (message = null).
+Use a safe call (?.) to get its length (default to 0 if null).
+Create a formatted string:
+If message is null → "No message"
+If length > 10 → "Message too long"
+Else → "Message: [message]"
+
+Sample Output:
+
+Message status: No message  
+
+
+Hint:
+
+val length = message?.length ?: 0  
+val status = when {  
+    message == null -> "No message"  
+    length > 10 -> "Message too long"  
+    else -> "Message: $message"  
+}  
+
+
